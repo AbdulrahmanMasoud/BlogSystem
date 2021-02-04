@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
@@ -108,5 +109,53 @@ class AuthController extends Controller
             'msg'=>'Registerd Done',
         ],200);
         
+    }
+
+    /**
+     * This To Update User Data  
+     * 1- Valedation
+     * 2- Check The Data From Valedation And if has any Erorr Will Gett Messags
+     * 3- If Has No Erorrs Will Update User Data And get Message Updated Done
+     */
+    public function updateUser(Request $request){
+         // 1- Valedation
+         $validator = Validator::make($request->all(),[
+            'name'=>'required',
+            'email'=> 'required|'.Rule::unique('users')->ignore(Auth::id()), // this to ignore the curent email 
+            'password'=> 'required',
+            'bio'=> 'string|max:100',
+            
+        ],$messages =[
+            'name.required' => 'Pleas Add Your Name',
+            'email' => 'Pleas Add Valid Email address',
+            'email.required' => 'We need to know your email address!',
+            'password.required' => 'We need to know your Password',
+        ]);
+
+        // 2- Check If Valedation Has any Erorr Will Gett Messags
+        if($validator->fails()){
+            return response()->json([
+                'status'=>false,
+                'msg'=>'Errorr',
+                'errors'=>$validator->errors()
+            ],422);
+        }
+
+        // 3- If Has No Erorrs Will Update User Data
+        $updateUser = User::where('id',Auth::id())->update([
+          'name'=>$request->name,
+          'email'=>$request->email,
+          'password' => \Hash::make($request->password),
+          'bio'=>$request->bio,
+        ]);
+
+        // 3- Get Message Updated Done
+        if($updateUser){ 
+            return response()->json([
+                'status'=>true,
+                'msg'=>'Updated Done'
+            ],200);
+        }
+
     }
 }

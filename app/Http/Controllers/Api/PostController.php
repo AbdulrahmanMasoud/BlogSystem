@@ -117,7 +117,7 @@ class PostController extends Controller
         // 'status' => $request->status
       ]);
 
-      return response()->json(['message' => 'data updated successfully' .$post], 200);
+      return response()->json(['message' => 'data updated successfully'], 200);
     } catch (\Throwable $th) {
       return response()->json($validator->errors(), 400);
       // return response()->json('test', 400);

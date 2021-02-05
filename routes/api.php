@@ -2,7 +2,7 @@
 
 
 use App\Http\Controllers\Api\CategoryController;
-
+use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
@@ -22,7 +22,9 @@ Route::group(['middleware' => ['auth:api'],'prefix' => 'v1'], function () {
     Route::put('user-update',[AuthController::class,'updateUser']);
     Route::post('logout',[AuthController::class,'logout']);
   Route::apiResource('categories', CategoryController::class);
+  Route::apiResource('posts', PostController::class);
 });
+
 
 /**
  * This Routes For Admins Onley
@@ -31,3 +33,4 @@ Route::group(['middleware' => ['auth:admin'],'prefix' => 'admin'], function () {
     Route::post('/login',[AdminController::class,'adminLogin'])->withoutMiddleware('auth:admin');
     Route::post('/logout',[AdminController::class,'adminLogout']);
 });
+

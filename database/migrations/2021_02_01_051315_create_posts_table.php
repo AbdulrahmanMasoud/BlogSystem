@@ -15,12 +15,13 @@ class CreatePostsTable extends Migration
   {
     Schema::create('posts', function (Blueprint $table) {
       $table->id();
-      // $table->foreignId('user_id')->constrained()->onDelete('cascade');
-      // $table->foreignId('category_id')->constrained()->onDelete('cascade');
-      $table->string('title');
+      $table->foreignId('user_id')->constrained()->onDelete('cascade');
+      $table->foreignId('category_id')->constrained()->onDelete('cascade');
+      $table->string('title')->unique();
       $table->string('slug')->unique();
       $table->longText('body');
-      $table->string('image');
+      $table->string('image')->nullable();
+      $table->unsignedTinyInteger('status')->default(1);
       $table->timestamps();
     });
   }

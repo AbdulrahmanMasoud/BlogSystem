@@ -60,7 +60,17 @@ class AdminController extends Controller
         
     }
 
-
+    /**
+     * This Logout For Admins 
+     * 1- Check This Admin or Not Using guard(admin)
+     */
+    public function adminLogout(){
+        Auth::guard('admin')->logout();
+        return response()->json([
+            'status'=>true,
+            'msg'=>'You Are Logout Admin',
+        ]);
+    }
 
 
 
@@ -114,14 +124,5 @@ class AdminController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+   
 }

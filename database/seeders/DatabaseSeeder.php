@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,5 +18,9 @@ class DatabaseSeeder extends Seeder
   {
     \App\Models\User::factory(1)->create();
     Category::factory(5)->create();
+    Post::factory(50)->create();
+    Tag::factory(5)->create();
+    
+    $this->call(PostsTagsSeeder::class);
   }
 }
